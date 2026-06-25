@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>月浦シミュレーター / Tsukiura Policy Sandbox — デモ</title>
+<style>
+  :root{--bg:#f5f6f8;--card:#fff;--ink:#1f2733;--sub:#5b6470;--border:#e3e6eb;
+    --teal:#0f766e;--teal-d:#134e4a;--teal-bg:#e9f5f3;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.75;}
+  header{background:linear-gradient(135deg,#134e4a,#0f766e 70%);color:#fff;padding:34px 22px 28px;text-align:center;}
+  header h1{margin:0 0 8px;font-size:1.5rem;}
+  header .sub{margin:0;color:#d7ece8;font-size:.95rem;}
+  header .by{margin:10px 0 0;color:#bfe0db;font-size:.8rem;}
+  main{max-width:920px;margin:0 auto;padding:24px 16px 64px;}
+  .lead{background:var(--teal-bg);border-left:4px solid var(--teal);border-radius:0 10px 10px 0;
+    padding:14px 18px;margin:0 0 22px;font-size:.98rem;}
+  .lead b{color:var(--teal-d);}
+  h2{font-size:1.05rem;color:var(--teal-d);margin:26px 0 12px;display:flex;align-items:center;gap:9px;}
+  h2::before{content:"";width:5px;height:17px;background:var(--teal);border-radius:2px;display:inline-block;}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  a.card{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--border);
+    border-radius:13px;padding:18px 19px;box-shadow:0 1px 3px rgba(0,0,0,.05);transition:.15s;}
+  a.card:hover{border-color:var(--teal);box-shadow:0 4px 14px rgba(15,118,110,.15);transform:translateY(-2px);}
+  a.card h3{margin:0 0 6px;font-size:1rem;color:var(--teal-d);}
+  a.card p{margin:0;font-size:.86rem;color:var(--sub);line-height:1.6;}
+  a.card .go{display:inline-block;margin-top:9px;font-size:.8rem;color:var(--teal);font-weight:700;}
+  .note{font-size:.84rem;color:var(--sub);background:var(--card);border:1px solid var(--border);
+    border-radius:11px;padding:14px 17px;margin-top:14px;}
+  .note b{color:var(--teal-d);}
+  footer{text-align:center;color:var(--sub);font-size:.8rem;margin-top:34px;}
+  @media(max-width:640px){.cards{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header>
+  <h1>月浦シミュレーター</h1>
+  <p class="sub">Tsukiura Policy Sandbox — 政策を本番前に試す、再現可能なAI集落</p>
+  <p class="by">一般社団法人 未来技術推進協会 ／ 代表 草場 壽一</p>
+</header>
+<main>
+
+  <p class="lead">
+    架空の限界集落「月浦」に住民30人を<b>一人ずつ別々のAI</b>として住まわせ、
+    「ある政策を打つと10年で村がどう変わるか」を<b>何通りも試せる「政策の試作環境」</b>です。
+    未来を当てる装置ではなく、<b>人が事前に想像しにくい住民の反応・摩擦・思わぬ副作用を「見つける」</b>ための道具。
+    下のデモは、現実の人口構成に寄せた v3 で実機実行した結果（3つの乱数条件×3つの告知手段）を、そのまま再生・可視化したものです。
+  </p>
+
+  <h2>デモを見る</h2>
+  <div class="cards">
+    <a class="card" href="replay.html">
+      <h3>① 移住の漏斗を「見る」</h3>
+      <p>外から月浦に関わる30人のAIが、関心 → 問い合わせ → 訪問 → 移住 → 定着とどう動くか。広報誌・口コミ・偶発の3つの告知手段で比べられます。</p>
+      <span class="go">▶ リプレイを開く</span>
+    </a>
+    <a class="card" href="journey.html">
+      <h3>② 外の人の一年（RPG風）</h3>
+      <p>一人の移住希望者が月浦と関わる一年を、物語として追体験。住民AIとのやりとりから何が起きるかを見られます。</p>
+      <span class="go">▶ 物語を開く</span>
+    </a>
+    <a class="card" href="dashboard.html">
+      <h3>③ 司令室ダッシュボード</h3>
+      <p>KPI・告知手段ごとの差・住民の動きを一望する管理画面。どの施策がどの層に届かないかを俯瞰します。</p>
+      <span class="go">▶ ダッシュボードを開く</span>
+    </a>
+    <a class="card" href="about.html">
+      <h3>④ はじめての人のための説明</h3>
+      <p>月浦とは何か、v3で何を試したか、結果の読み方を、初見の人向けにやさしく解説。</p>
+      <span class="go">▶ 説明を読む</span>
+    </a>
+  </div>
+
+  <h2>1枚で分かる資料</h2>
+  <div class="cards">
+    <a class="card" href="onepager.html">
+      <h3>📄 1ページ資料</h3>
+      <p>いまできていること／世界の中での位置／クレジットで進めるロードマップ／AGIとの接続を、A4一枚に集約。</p>
+      <span class="go">▶ 開く</span>
+    </a>
+  </div>
+
+  <div class="note">
+    <b>このデモの位置づけ：</b>住民は現実の人口構成に寄せた架空の人物で、実在の集落データによる検証（retrodiction）はこれからの段階です。
+    同じ実験の再生は追加API費用なしで監査・再走できます（決定論エンジン＋再現キャッシュ＋不変条件テスト363本以上／プロジェクトのログ上）。
+    基盤LLMは特定モデルに依存せず載せ替え可能（現行はClaude中心、記憶検索にOpenAI埋め込み）。
+  </div>
+
+  <footer>
+    月浦シミュレーター / Tsukiura Policy Sandbox　·　一般社団法人 未来技術推進協会
+  </footer>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>月浦 v3 リプレイ — 移住の漏斗（外部AI30人）</title>
+<style>
+  :root{
+    --bg:#0f1620; --panel:#18222e; --panel2:#1f2c3a; --ink:#e8eef4; --sub:#9fb0c0; --border:#2c3a4a;
+    --considering:#3b82f6; --interested:#10b981; --kinship:#f59e0b; --control:#6b7280;
+    --hot:#f43f5e; --teal:#2dd4bf;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.7}
+  .banner{background:#3a2a13;color:#ffd9a8;border-bottom:1px solid #5a4220;padding:7px 16px;font-size:12px;text-align:center}
+  header{padding:16px 20px 6px;text-align:center}
+  header h1{margin:0;font-size:1.2rem}
+  header p{margin:4px 0 0;color:var(--sub);font-size:.82rem}
+  .wrap{max-width:1080px;margin:0 auto;padding:10px 16px 40px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin:8px 0 14px}
+  .chbtn{background:var(--panel2);color:var(--sub);border:1px solid var(--border);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+  .chbtn.active{background:var(--teal);color:#06231f;border-color:var(--teal);font-weight:700}
+  .stepper{display:flex;align-items:center;gap:8px}
+  .stepper button{background:var(--panel2);color:var(--ink);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:1rem}
+  .stepper button:hover{border-color:var(--teal)}
+  .month{font-weight:700;min-width:128px;text-align:center}
+  input[type=range]{width:200px}
+  .board{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
+  .col{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:8px;min-height:260px}
+  .colhead{text-align:center;font-weight:700;font-size:.86rem;padding-bottom:6px;border-bottom:1px solid var(--border);margin-bottom:8px}
+  .colhead .cnt{display:inline-block;background:var(--panel2);border-radius:999px;padding:0 9px;margin-left:4px;color:var(--teal)}
+  .tokens{display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start}
+  .tok{position:relative;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:#fff;cursor:default;border:2px solid transparent;transition:transform .15s}
+  .tok small{font-size:.55rem;opacity:.9}
+  .tok.changed{border-color:#fff;box-shadow:0 0 8px rgba(255,255,255,.7);transform:scale(1.12)}
+  .tok .exp{position:absolute;top:-5px;right:-5px;width:12px;height:12px;border-radius:50%;border:1px solid #0f1620;font-size:.5rem;display:flex;align-items:center;justify-content:center}
+  .seg-considering{background:var(--considering)} .seg-interested{background:var(--interested)}
+  .seg-kinship{background:var(--kinship)} .seg-control{background:var(--control)}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;font-size:.78rem;color:var(--sub);margin-bottom:14px}
+  .legend b{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:middle;margin-right:4px}
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 14px;min-height:120px}
+  .panel h3{margin:0 0 8px;font-size:.9rem;color:var(--teal)}
+  .ev{font-size:.82rem;margin:3px 0;color:var(--sub)}
+  .ev b{color:var(--ink)}
+  .letter{font-size:.8rem;border-left:3px solid var(--border);padding:4px 10px;margin:7px 0;background:var(--panel2);border-radius:0 8px 8px 0}
+  .letter .h{color:var(--teal);font-weight:700;font-size:.76rem}
+  .xt{color:var(--considering)} .tx{color:var(--kinship)}
+  .vill{font-size:.78rem;color:var(--sub);margin:2px 0}
+  .muted{color:var(--sub);font-size:.8rem}
+  footer{text-align:center;color:var(--sub);font-size:.74rem;padding:18px 16px 0;line-height:1.6}
+  .pill{display:inline-block;background:var(--panel2);border:1px solid var(--border);border-radius:999px;padding:1px 9px;font-size:.74rem;color:var(--sub);margin:0 3px}
+  @media(max-width:760px){.panels{grid-template-columns:1fr}.board{grid-template-columns:repeat(5,1fr);gap:4px}.tok{width:26px;height:26px}}
+</style>
+</head>
+<body>
+<div class="banner">⚠️ これは実験データの再生です。月浦は<b>AIで作った架空の村</b>であり、実在の自治体ではありません。数値・手紙はすべて実際の実行ログ（改変なし）です。</div>
+<header>
+  <h1>月浦 v3 リプレイ — 移住の漏斗を「見る」</h1>
+  <p>村の外の30人（AI）が、告知の配り方で<b>未認知→認知→関心→参加→継続</b>とどう動くか。同じseed・同じ村で、配り方だけ3通り。</p>
+</header>
+<div class="wrap">
+  <div class="controls">
+    <div id="chbtns"></div>
+    <div class="stepper">
+      <button id="prev">◀</button>
+      <button id="play">▶</button>
+      <button id="next">▶</button>
+      <span class="month" id="month"></span>
+      <input type="range" id="slider" min="1" max="12" value="1">
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><b style="background:var(--considering)"></b>移住検討(10)</span>
+    <span><b style="background:var(--interested)"></b>関心層(8)</span>
+    <span><b style="background:var(--kinship)"></b>縁故(7)</span>
+    <span><b style="background:var(--control)"></b>対照群(5)</span>
+    <span class="pill">⚡=今月 露出（s=自力 / w=口コミ / r=ランダム）</span>
+    <span class="pill">白枠＝今月 状態が動いた人</span>
+  </div>
+
+  <div class="board" id="board"></div>
+
+  <div class="panels">
+    <div class="panel">
+      <h3>📨 今月の手紙（村人 ↔ 外の人・実物）</h3>
+      <div id="letters"></div>
+    </div>
+    <div>
+      <div class="panel" style="margin-bottom:12px">
+        <h3>📍 今月の出来事</h3>
+        <div id="events"></div>
+      </div>
+      <div class="panel">
+        <h3>🏡 今月の村人の動き（一部）</h3>
+        <div id="villagers"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    月浦シミュレーター v3 ・ seed2 ・ 実行ログから自動生成（演出の捏造なし）<br>
+    参加者数（最終）：広報誌7 ／ 口コミ21 ／ ランダム17。「参加」列＋「継続」列の合計。
+  </footer>
+</div>
+
+<script src="tsukiura_replay_data_v3.js"></script>
+<script>
+const D = TSUKIURA_V3_DATA;
+const ORDER = D.state_order;            // UNAWARE..RETENTION
+const SJA = D.state_ja, SEGJA = D.seg_ja, EX = D.externals, VIL = D.villagers;
+let ch = "word_of_mouth";   // 初期は口コミ（カスケードが分かりやすい）
+let tick = 1, timer = null;
+
+// チャンネルボタン
+const chOrder = ["newsletter","word_of_mouth","random"];
+const chbtns = document.getElementById("chbtns");
+chOrder.forEach(c=>{
+  const b=document.createElement("button"); b.className="chbtn"; b.dataset.c=c;
+  b.textContent=D.channels[c].label; b.onclick=()=>{ch=c;tick=1;syncBtns();render();};
+  chbtns.appendChild(b);
+});
+function syncBtns(){[...chbtns.children].forEach(b=>b.classList.toggle("active",b.dataset.c===ch));}
+
+// 各tickの funnel 行を ext_id 索引化
+function rowsAt(t){
+  const m={}; (D.channels[ch].ticks[t-1].funnel||[]).forEach(f=>m[f.id]=f); return m;
+}
+function monthLabel(t){
+  const m0=(D.village.start_month-1)+(t-1); const y=D.village.start_year+Math.floor(m0/12);
+  return `${y}年${(m0%12)+1}月（${t}ヶ月目）`;
+}
+
+function render(){
+  document.getElementById("month").textContent=monthLabel(tick);
+  document.getElementById("slider").value=tick;
+  const rows=rowsAt(tick);
+
+  // 列ごとに振り分け
+  const cols={}; ORDER.forEach(s=>cols[s]=[]);
+  Object.keys(EX).forEach(id=>{
+    const r=rows[id]; const st=r?r.to:"UNAWARE";
+    cols[st].push({id,r});
+  });
+
+  const board=document.getElementById("board"); board.innerHTML="";
+  ORDER.forEach(s=>{
+    const col=document.createElement("div"); col.className="col";
+    col.innerHTML=`<div class="colhead">${SJA[s]}<span class="cnt">${cols[s].length}</span></div>`;
+    const tk=document.createElement("div"); tk.className="tokens";
+    cols[s].sort((a,b)=>a.id.localeCompare(b.id)).forEach(({id,r})=>{
+      const seg=EX[id].segment;
+      const d=document.createElement("div");
+      d.className=`tok seg-${seg}`+((r&&r.from!==r.to)?" changed":"");
+      d.innerHTML=`${id.replace('X','')}`;
+      d.title=`${EX[id].name}（${SEGJA[seg]}）\n${EX[id].persona||""}`;
+      if(r&&r.exp){
+        const e=document.createElement("span"); e.className="exp";
+        const sc=r.src==="self"?"#60a5fa":r.src==="wom"?"#f59e0b":r.src==="random"?"#a78bfa":"#888";
+        e.style.background=sc; e.textContent=r.src==="self"?"s":r.src==="wom"?"w":r.src==="random"?"r":"";
+        d.appendChild(e);
+      }
+      tk.appendChild(d);
+    });
+    col.appendChild(tk); board.appendChild(col);
+  });
+
+  // 出来事
+  const ev=document.getElementById("events"); ev.innerHTML="";
+  const changes=[], exposed=[], contacts=[];
+  Object.keys(EX).forEach(id=>{
+    const r=rows[id]; if(!r)return;
+    if(r.from!==r.to) changes.push(`<b>${id}</b> ${SJA[r.from]}→${SJA[r.to]}`+(r.act?`（${actJa(r.act)}）`:""));
+    if(r.exp) exposed.push(`${id}<span class="muted">(${srcJa(r.src)})</span>`);
+    if(r.act==="CONTACT_VILLAGER"&&r.recip) contacts.push(`<b>${id}</b> → 村人${r.recip} へ手紙`);
+  });
+  const line=(label,arr)=> arr.length?`<div class="ev">${label}：${arr.join("　")}</div>`:"";
+  ev.innerHTML = (line("⚡ 今月 情報が届いた", exposed)
+    + line("🔀 状態が動いた", changes)
+    + line("✉️ 村人へ連絡（口コミの種火）", contacts)) || `<div class="muted">この月は大きな動きなし。</div>`;
+
+  // 手紙
+  const lt=document.getElementById("letters"); lt.innerHTML="";
+  const letters=D.channels[ch].ticks[tick-1].letters||[];
+  if(!letters.length) lt.innerHTML=`<div class="muted">この月の手紙はありません。</div>`;
+  letters.slice(0,8).forEach(m=>{
+    const ext = m.from.startsWith("X")?m.from:m.to;
+    const isXT = m.from.startsWith("X");
+    const nm = id=> id.startsWith("X")?(EX[id]?EX[id].name:id):(VIL[id]||id);
+    const div=document.createElement("div"); div.className="letter";
+    div.innerHTML=`<div class="h ${isXT?'xt':'tx'}">${nm(m.from)} → ${nm(m.to)}</div>${escapeHtml(m.text)}`;
+    lt.appendChild(div);
+  });
+  if(letters.length>8) lt.innerHTML+=`<div class="muted">…ほか ${letters.length-8} 通</div>`;
+
+  // 村人
+  const vl=document.getElementById("villagers"); vl.innerHTML="";
+  const vacts=(D.channels[ch].ticks[tick-1].villagers||[]).filter(v=>v.say).slice(0,6);
+  if(!vacts.length) vl.innerHTML=`<div class="muted">—</div>`;
+  vacts.forEach(v=>{
+    const div=document.createElement("div"); div.className="vill";
+    div.innerHTML=`<b>${VIL[v.id]||v.id}</b> ${v.verb?`<span class="muted">[${v.verb}]</span> `:""}${escapeHtml(v.say)}`;
+    vl.appendChild(div);
+  });
+}
+function actJa(a){return {INVESTIGATE:"調べる",CONTACT_VILLAGER:"村人へ連絡",REGISTER:"登録",IGNORE:"無視"}[a]||a;}
+function srcJa(s){return {self:"自力",wom:"口コミ",random:"ランダム",none:""}[s]||s;}
+function escapeHtml(s){return (s||"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+
+document.getElementById("prev").onclick=()=>{tick=Math.max(1,tick-1);render();};
+document.getElementById("next").onclick=()=>{tick=Math.min(12,tick+1);render();};
+document.getElementById("slider").oninput=e=>{tick=+e.target.value;render();};
+document.getElementById("play").onclick=function(){
+  if(timer){clearInterval(timer);timer=null;this.textContent="▶";return;}
+  this.textContent="⏸";
+  timer=setInterval(()=>{ if(tick>=12){tick=1;} else tick++; render(); if(tick===12){} },1100);
+};
+
+syncBtns(); render();
+</script>
+</body>
+</html>

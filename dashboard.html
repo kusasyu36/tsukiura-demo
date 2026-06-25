@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>月浦シミュレーター — 司令室ダッシュボード（v3）</title>
+<style>
+  :root{
+    --bg:#0a0f17; --panel:#111a26; --panel2:#16212f; --line:#22303f; --ink:#e9f1f8; --sub:#8ba0b3;
+    --cyan:#36d6e0; --green:#34d399; --amber:#fbbf24; --pink:#fb7185; --violet:#a78bfa;
+    --considering:#4f9dff; --interested:#27d39a; --kinship:#ffb02e; --control:#7c8794;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(circle at 20% -10%,#13243a 0,var(--bg) 55%);color:var(--ink);
+       font-family:"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;font-size:13px}
+  .mono{font-family:"SF Mono",Menlo,Consolas,monospace}
+  .banner{background:#2a1f0e;color:#ffd9a8;border-bottom:1px solid #4a3818;padding:5px 14px;font-size:11px;text-align:center}
+  header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 16px;background:linear-gradient(180deg,#13202f,#0e1722);border-bottom:1px solid var(--line)}
+  header h1{margin:0;font-size:15px;letter-spacing:.04em;color:var(--cyan);white-space:nowrap}
+  header h1 small{color:var(--sub);font-size:11px;letter-spacing:0}
+  .tabs{display:flex;gap:6px}
+  .tab{background:var(--panel2);color:var(--sub);border:1px solid var(--line);border-radius:7px;padding:5px 12px;cursor:pointer;font-size:12px}
+  .tab.active{background:var(--cyan);color:#04222a;border-color:var(--cyan);font-weight:700}
+  .clock{margin-left:auto;display:flex;align-items:center;gap:8px}
+  .clock .m{border:1px solid var(--line);background:#0c151f;border-radius:7px;padding:4px 12px;letter-spacing:.05em;min-width:148px;text-align:center}
+  .clock button{background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:7px;width:30px;height:30px;cursor:pointer}
+  .clock button:hover{border-color:var(--cyan)}
+  input[type=range]{width:150px;accent-color:var(--cyan)}
+  .wrap{padding:12px 16px 28px;max-width:1140px;margin:0 auto}
+  /* gauges */
+  .gauges{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+  .g{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px 14px}
+  .g .lab{font-size:12px;color:var(--sub)}
+  .g .num{font-size:30px;font-weight:800;line-height:1.1}
+  .g .num small{font-size:13px;color:var(--sub);font-weight:400}
+  .g .delta{font-size:11px;margin-left:6px}
+  .g .bar{height:7px;background:#0c1620;border-radius:99px;margin-top:7px;overflow:hidden}
+  .g .fill{height:100%;border-radius:99px;transition:width .5s}
+  .g.aware .num,.g.aware .fill{color:var(--cyan)} .g.aware .fill{background:var(--cyan)}
+  .g.interest .num,.g.interest .fill{color:var(--violet)} .g.interest .fill{background:var(--violet)}
+  .g.part .num,.g.part .fill{color:var(--green)} .g.part .fill{background:var(--green)}
+  .g.ret .num,.g.ret .fill{color:var(--amber)} .g.ret .fill{background:var(--amber)}
+  /* main */
+  .main{display:grid;grid-template-columns:1.55fr 1fr;gap:12px}
+  .flow{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+  .flow .ttl,.feed .ttl{font-size:12px;color:var(--sub);margin-bottom:6px;display:flex;justify-content:space-between}
+  #stage{position:relative;height:300px}
+  .colhd{position:absolute;top:0;text-align:center;font-size:11px;color:var(--sub);transform:translateX(-50%)}
+  .colhd b{color:var(--ink)}
+  .dot{position:absolute;width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.15);
+       transition:left .8s cubic-bezier(.5,.1,.3,1),top .5s;display:flex;align-items:center;justify-content:center;font-size:8px;color:#06121c;font-weight:800}
+  .dot.changed{border-color:#fff;box-shadow:0 0 9px 2px rgba(255,255,255,.7)}
+  .dot.seg-considering{background:var(--considering)} .dot.seg-interested{background:var(--interested)}
+  .dot.seg-kinship{background:var(--kinship)} .dot.seg-control{background:var(--control)}
+  .feed{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+  #feedlist{height:300px;overflow-y:auto;font-size:12px}
+  .fe{padding:5px 8px;border-left:3px solid var(--line);margin:4px 0;border-radius:0 6px 6px 0;background:var(--panel2)}
+  .fe .t{color:var(--sub);font-size:10.5px;margin-right:6px}
+  .fe.aware{border-color:var(--cyan)} .fe.interest{border-color:var(--violet)}
+  .fe.contact{border-color:var(--amber)} .fe.part{border-color:var(--green)} .fe.ret{border-color:var(--pink)}
+  .fe b{color:var(--ink)}
+  /* bottom */
+  .bottom{display:grid;grid-template-columns:1fr 1.3fr;gap:12px;margin-top:12px}
+  .pred{background:linear-gradient(135deg,#10243a,#0c1a2a);border:1px solid #1d3a52;border-radius:12px;padding:12px 16px}
+  .pred .ttl{color:var(--cyan);font-size:12px}
+  .pred .big{font-size:18px;font-weight:800;margin-top:4px}
+  .pred .note{color:var(--sub);font-size:10.5px;margin-top:6px}
+  .letter{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+  .letter .ttl{color:var(--amber);font-size:12px;margin-bottom:5px}
+  .letter .who{font-weight:700;font-size:12px;color:var(--considering)}
+  .letter .body{font-size:12px;color:#cfe0ee;margin-top:3px}
+  .legend{display:flex;gap:13px;flex-wrap:wrap;font-size:10.5px;color:var(--sub);margin:8px 2px 0}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:middle;margin-right:3px}
+  footer{text-align:center;color:var(--sub);font-size:10.5px;padding:14px}
+</style>
+</head>
+<body>
+<div class="banner">⚠️ 実験データの再生です。月浦は<b>AIで作った架空の村</b>（実在自治体ではありません）。数値・手紙はすべて実際の実行ログ（改変なし）。「見込み」はこのシミュレーション内の最終値です。</div>
+<header>
+  <h1>🛰 月浦シミュレーター <small>v3 ・ seed2 ・ 司令室ダッシュボード</small></h1>
+  <div class="tabs" id="tabs"></div>
+  <div class="clock">
+    <button id="prev">◀</button><button id="play">▶</button><button id="next">▶</button>
+    <span class="m" id="month"></span>
+    <input type="range" id="slider" min="1" max="12" value="1">
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="gauges">
+    <div class="g aware"><div class="lab">認知（情報が届いた）</div><div class="num"><span id="n-aware">0</span><small>/30</small><span class="delta" id="d-aware"></span></div><div class="bar"><div class="fill" id="f-aware" style="width:0"></div></div></div>
+    <div class="g interest"><div class="lab">関心</div><div class="num"><span id="n-interest">0</span><small>/30</small><span class="delta" id="d-interest"></span></div><div class="bar"><div class="fill" id="f-interest" style="width:0"></div></div></div>
+    <div class="g part"><div class="lab">参加（イベント）</div><div class="num"><span id="n-part">0</span><small>/30</small><span class="delta" id="d-part"></span></div><div class="bar"><div class="fill" id="f-part" style="width:0"></div></div></div>
+    <div class="g ret"><div class="lab">継続（定着）</div><div class="num"><span id="n-ret">0</span><small>/30</small><span class="delta" id="d-ret"></span></div><div class="bar"><div class="fill" id="f-ret" style="width:0"></div></div></div>
+  </div>
+
+  <div class="main">
+    <div class="flow">
+      <div class="ttl"><span>人の流れ（村の外の30人 — 段階が進むと右へ）</span><span class="mono" id="flowsub"></span></div>
+      <div id="stage"></div>
+      <div class="legend">
+        <span><i style="background:var(--considering)"></i>移住検討</span>
+        <span><i style="background:var(--interested)"></i>関心層</span>
+        <span><i style="background:var(--kinship)"></i>縁故</span>
+        <span><i style="background:var(--control)"></i>対照群</span>
+        <span>白く光る＝今月 段階が進んだ人</span>
+      </div>
+    </div>
+    <div class="feed">
+      <div class="ttl"><span>📡 実況フィード</span><span class="mono">最新が上</span></div>
+      <div id="feedlist"></div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="pred">
+      <div class="ttl">📈 1年後の到達見込み（このシミュレーション）</div>
+      <div class="big" id="pred"></div>
+      <div class="note">※ 架空の村での最終値。実在自治体の予測ではありません（実データで校正して初めて本番）。</div>
+    </div>
+    <div class="letter">
+      <div class="ttl">📜 今月の手紙（村人 ↔ 外の人・実物）</div>
+      <div id="letter"></div>
+    </div>
+  </div>
+</div>
+
+<footer>月浦シミュレーター v3 ・ 実行ログから自動生成（演出の捏造なし）／ 参加者数 最終：広報誌7・口コミ21・ランダム17</footer>
+
+<script src="tsukiura_replay_data_v3.js"></script>
+<script>
+const D=TSUKIURA_V3_DATA, ORDER=D.state_order, SJA=D.state_ja, SEGJA=D.seg_ja, EX=D.externals, VIL=D.villagers;
+const ZONES=["UNAWARE","AWARE","INTEREST","PARTICIPATION","RETENTION"];
+const RANK={UNAWARE:0,AWARE:1,INTEREST:2,PARTICIPATION:3,RETENTION:4};
+let ch="word_of_mouth", tick=1, timer=null;
+const EXIDS=Object.keys(EX).sort();
+
+// タブ
+const chOrder=["newsletter","word_of_mouth","random"];
+const tabs=document.getElementById("tabs");
+chOrder.forEach(c=>{const b=document.createElement("button");b.className="tab";b.dataset.c=c;b.textContent=D.channels[c].label;b.onclick=()=>{ch=c;tick=1;sync();render();};tabs.appendChild(b);});
+function sync(){[...tabs.children].forEach(b=>b.classList.toggle("active",b.dataset.c===ch));}
+
+function rowsAt(t){const m={};(D.channels[ch].ticks[t-1].funnel||[]).forEach(f=>m[f.id]=f);return m;}
+function stateAt(t){const r=rowsAt(t);const s={};EXIDS.forEach(id=>s[id]=r[id]?r[id].to:"UNAWARE");return s;}
+function monthLabel(t){const m0=(D.village.start_month-1)+(t-1);const y=D.village.start_year+Math.floor(m0/12);return `${y}年${(m0%12)+1}月 ・ ${t}/12`;}
+function counts(t){const s=stateAt(t);const c={aware:0,interest:0,part:0,ret:0};Object.values(s).forEach(st=>{const r=RANK[st];if(r>=1)c.aware++;if(r>=2)c.interest++;if(r>=3)c.part++;if(r>=4)c.ret++;});return c;}
+
+// 実況フィード（全月分を事前生成）
+function buildFeed(){
+  const out=[];
+  D.channels[ch].ticks.forEach(tk=>{
+    (tk.funnel||[]).forEach(f=>{
+      const t=tk.tick, nm=EX[f.id]?EX[f.id].name:f.id;
+      if(f.from!==f.to){
+        if(f.to==="AWARE") out.push({t,k:"aware",h:`⚡ <b>${nm}</b> が月浦を知った <span class="t">(${srcJa(f.src)})</span>`});
+        else if(f.to==="INTEREST") out.push({t,k:"interest",h:`👀 <b>${nm}</b> が関心を持った`});
+        else if(f.to==="PARTICIPATION") out.push({t,k:"part",h:`🎪 <b>${nm}</b> がイベントに参加`});
+        else if(f.to==="RETENTION") out.push({t,k:"ret",h:`✅ <b>${nm}</b> が登録・定着`});
+      }
+      if(f.act==="CONTACT_VILLAGER"&&f.recip){const vn=VIL[f.recip]||f.recip;out.push({t,k:"contact",h:`✉️ <b>${nm}</b> が村人「${vn}」へ手紙`});}
+    });
+  });
+  return out;
+}
+let FEED=[];
+
+function render(){
+  document.getElementById("month").textContent=monthLabel(tick);
+  document.getElementById("slider").value=tick;
+  FEED=buildFeed();
+  const c=counts(tick), cp=tick>1?counts(tick-1):{aware:0,interest:0,part:0,ret:0};
+  setG("aware",c.aware,c.aware-cp.aware); setG("interest",c.interest,c.interest-cp.interest);
+  setG("part",c.part,c.part-cp.part); setG("ret",c.ret,c.ret-cp.ret);
+
+  // 人の流れ（ドット）
+  const stage=document.getElementById("stage"); const W=stage.clientWidth||640;
+  const colW=W/5;
+  // 列見出し
+  if(!stage.querySelector(".colhd")){ZONES.forEach((s,i)=>{const h=document.createElement("div");h.className="colhd";h.dataset.s=s;h.style.left=(colW*(i+0.5))+"px";stage.appendChild(h);});}
+  const rows=rowsAt(tick); const byCol={};ZONES.forEach(s=>byCol[s]=[]);
+  EXIDS.forEach(id=>{byCol[rows[id]?rows[id].to:"UNAWARE"].push(id);});
+  stage.querySelectorAll(".colhd").forEach(h=>{const s=h.dataset.s;const i=ZONES.indexOf(s);h.style.left=(colW*(i+0.5))+"px";h.innerHTML=`${SJA[s]}<br><b>${byCol[s].length}</b>`;});
+  EXIDS.forEach(id=>{
+    let d=document.getElementById("dot_"+id);
+    if(!d){d=document.createElement("div");d.id="dot_"+id;d.className="dot seg-"+EX[id].segment;d.textContent=id.replace("X","");d.title=EX[id].name+"（"+SEGJA[EX[id].segment]+"）";stage.appendChild(d);}
+    const r=rows[id]; const st=r?r.to:"UNAWARE"; const ci=RANK[st]; const arr=byCol[st]; const idx=arr.indexOf(id);
+    d.style.left=(colW*ci + 12 + (idx%4)*20)+"px";
+    d.style.top=(26 + Math.floor(idx/4)*26)+"px";
+    d.classList.toggle("changed", !!(r&&r.from!==r.to));
+  });
+  document.getElementById("flowsub").textContent=`未認知 ${byCol.UNAWARE.length} → 継続 ${byCol.RETENTION.length}`;
+
+  // フィード（tick以下・最新が上）
+  const fl=document.getElementById("feedlist");
+  fl.innerHTML=FEED.filter(e=>e.t<=tick).sort((a,b)=>b.t-a.t).map(e=>
+    `<div class="fe ${e.k}"><span class="t">${e.t}ヶ月</span>${e.h}</div>`).join("")||`<div class="fe">まだ動きはありません。</div>`;
+
+  // 見込み（最終 tick12 の値）
+  const fin=counts(12);
+  document.getElementById("pred").innerHTML=`定着 <span style="color:var(--amber)">${fin.ret}人</span> ／ 参加到達 <span style="color:var(--green)">${fin.part}人</span> ／ 認知 ${fin.aware}人`;
+
+  // 今月の手紙（1通）
+  const lts=D.channels[ch].ticks[tick-1].letters||[];
+  const L=document.getElementById("letter");
+  if(!lts.length){L.innerHTML=`<div class="body" style="color:var(--sub)">この月の手紙はありません。</div>`;}
+  else{const m=lts[0];const nm=id=>id&&id.startsWith("X")?(EX[id]?EX[id].name:id):(VIL[id]||id);
+    L.innerHTML=`<div class="who">${nm(m.from)} → ${nm(m.to)}${lts.length>1?` <span style="color:var(--sub);font-weight:400">ほか${lts.length-1}通</span>`:""}</div><div class="body">${esc(m.text)}</div>`;}
+}
+function setG(k,v,dl){
+  document.getElementById("n-"+k).textContent=v;
+  document.getElementById("f-"+k).style.width=(v/30*100)+"%";
+  const de=document.getElementById("d-"+k);
+  de.textContent=dl>0?`+${dl}`:""; de.style.color=dl>0?"#34d399":"transparent";
+}
+function srcJa(s){return{self:"自力",wom:"口コミ",random:"ランダム",none:""}[s]||s;}
+function esc(s){return(s||"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+
+document.getElementById("prev").onclick=()=>{tick=Math.max(1,tick-1);render();};
+document.getElementById("next").onclick=()=>{tick=Math.min(12,tick+1);render();};
+document.getElementById("slider").oninput=e=>{tick=+e.target.value;render();};
+document.getElementById("play").onclick=function(){if(timer){clearInterval(timer);timer=null;this.textContent="▶";return;}this.textContent="⏸";timer=setInterval(()=>{tick=tick>=12?1:tick+1;render();},1200);};
+
+sync(); render();
+</script>
+</body>
+</html>
