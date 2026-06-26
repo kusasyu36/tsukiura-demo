@@ -14,52 +14,45 @@
   html,body{margin:0;padding:0;}
   body{
     font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
-    color:var(--ink);line-height:1.5;background:#eceef1;font-size:9.4pt;
+    color:var(--ink);line-height:1.5;background:#eceef1;font-size:8.9pt;
   }
   .page{
     width:210mm;min-height:297mm;margin:14px auto;background:#fff;
-    padding:13mm 14mm 11mm;box-shadow:0 2px 12px rgba(0,0,0,.12);
+    padding:12mm 13mm 10mm;box-shadow:0 2px 12px rgba(0,0,0,.12);
   }
-  header{border-bottom:2.5px solid var(--teal);padding-bottom:8px;margin-bottom:11px;
-    display:flex;justify-content:space-between;align-items:flex-end;gap:14px;}
-  header .t h1{margin:0;font-size:17pt;color:var(--teal-d);letter-spacing:.5px;}
-  header .t .sub{font-size:9pt;color:var(--teal);font-weight:700;margin-top:3px;}
-  header .meta{font-size:8pt;color:var(--sub);text-align:right;white-space:nowrap;line-height:1.6;}
+  header{border-bottom:2.5px solid var(--teal);padding-bottom:7px;margin-bottom:10px;}
+  header h1{margin:0;font-size:16.5pt;color:var(--teal-d);letter-spacing:.5px;}
+  header .sub{font-size:9pt;color:var(--teal);font-weight:700;margin-top:3px;}
   .lead{background:var(--teal-bg);border-left:4px solid var(--teal);border-radius:0 7px 7px 0;
-    padding:9px 13px;margin:0 0 12px;font-size:10pt;}
-  .lead b{color:var(--teal-d);}
-  h2{font-size:10.5pt;color:var(--teal-d);margin:0 0 6px;
-    display:flex;align-items:center;gap:8px;}
+    padding:9px 13px;margin:0 0 11px;font-size:9.4pt;}
+  h2{font-size:10.2pt;color:var(--teal-d);margin:0 0 6px;display:flex;align-items:center;gap:8px;}
   h2::before{content:"";width:5px;height:14px;background:var(--teal);border-radius:2px;display:inline-block;}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
-  section.block{margin-bottom:12px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px;}
+  section.block{margin-bottom:11px;}
   ul{margin:4px 0 0;padding-left:17px;}
   li{margin:3px 0;}
-  li b{color:var(--teal-d);}
-  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:4px;}
-  .card{border:1px solid var(--border);border-radius:8px;padding:8px 9px;background:#fafbfc;}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:5px;}
+  .card{border:1px solid var(--border);border-radius:8px;padding:9px 10px;background:#fafbfc;}
   .card .n{display:inline-block;background:var(--teal);color:#fff;border-radius:50%;
-    width:17px;height:17px;line-height:17px;text-align:center;font-size:8pt;font-weight:700;margin-bottom:4px;}
-  .card h3{margin:0 0 3px;font-size:8.8pt;color:var(--teal-d);}
-  .card p{margin:0;font-size:8pt;color:var(--sub);line-height:1.45;}
-  .sublabel{font-size:8.4pt;font-weight:700;color:var(--teal);margin:6px 0 5px;}
+    width:18px;height:18px;line-height:18px;text-align:center;font-size:8.2pt;font-weight:700;margin-bottom:5px;}
+  .card h3{margin:0 0 3px;font-size:8.6pt;color:var(--teal-d);}
+  .card p{margin:0;font-size:7.9pt;color:var(--sub);line-height:1.45;}
+  .sublabel{font-size:8.5pt;font-weight:700;color:var(--teal);margin:6px 0 5px;}
   .next3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
   .nx{border-left:3px solid var(--teal);background:var(--teal-bg);border-radius:0 7px 7px 0;
     padding:7px 9px;font-size:8pt;color:var(--sub);line-height:1.45;}
-  .nx b{display:block;color:var(--teal-d);margin-bottom:2px;font-size:8.4pt;}
+  .nx b{display:block;color:var(--teal-d);margin-bottom:2px;font-size:8.4pt;font-weight:700;}
   .amber{background:var(--amber-bg);border-left:4px solid var(--amber);border-radius:0 7px 7px 0;
-    padding:8px 12px;font-size:8.8pt;}
-  .amber b{color:var(--amber);}
+    padding:8px 12px;font-size:8.4pt;line-height:1.5;}
   .pos table{border-collapse:collapse;width:100%;font-size:8.3pt;}
   .pos th,.pos td{border:1px solid var(--border);padding:5px 8px;text-align:left;vertical-align:top;}
   .pos th{background:#f4f1ea;white-space:nowrap;}
   .pos .us{background:var(--teal-bg);}
   .pos .us td{font-weight:600;}
-  footer{border-top:1px solid var(--border);margin-top:13px;padding-top:8px;
+  footer{border-top:1px solid var(--border);margin-top:11px;padding-top:8px;
     font-size:8pt;color:var(--sub);display:flex;justify-content:space-between;gap:12px;}
-  .tag{display:inline-block;background:#eef1f4;border-radius:5px;padding:2px 7px;font-size:7.6pt;color:var(--sub);margin:0 3px 3px 0;}
   @media print{
-    body{background:#fff;font-size:9.2pt;}
+    body{background:#fff;font-size:8.7pt;}
     .page{margin:0;box-shadow:none;width:auto;min-height:auto;padding:9mm 11mm;}
     @page{size:A4;margin:0;}
   }
@@ -69,120 +62,96 @@
 <div class="page">
 
   <header>
-    <div class="t">
-      <h1>月浦シミュレーター</h1>
-      <div class="sub">Tsukiura Policy Sandbox ― 政策を本番前に試す、再現可能なAI集落</div>
-    </div>
-    <div class="meta">
-      草場 壽一（一般社団法人 未来技術推進協会 代表理事）<br>
-      Series T「Post AGI from Kyoto」応募資料 / 2026-06
-    </div>
+    <h1>月浦シミュレーター</h1>
+    <div class="sub">Tsukiura Policy Sandbox　政策を本番の前に試せる、くり返し同じ結果を出せるAIの集落</div>
   </header>
 
   <p class="lead">
-    架空の限界集落「月浦」に住民30人を<b>一人ずつ別々のAI</b>として住まわせ、
-    「ある政策を打つと10年で村がどう変わるか」を<b>何通りも試せる「政策の試作環境」</b>。
-    未来を当てる装置ではなく、<b>人が事前に想像しにくい住民の反応・摩擦・思わぬ副作用を「見つける」</b>道具です。
+    架空の限界集落、月浦に、住民30人をそれぞれ別のAIとして住まわせています。
+    ある政策を打つと10年で村がどう変わるかを、条件を変えながら何度も試せる、政策の試作環境です。
+    未来を当てる道具ではなく、人が事前には想像しにくい住民の反応や摩擦、思わぬ副作用を、先に見つけるためのものです。
   </p>
 
   <div class="grid2">
     <section class="block">
       <h2>いまできていること</h2>
       <ul>
-        <li><b>v1 完走</b>：30人×10年×3つの政策パスの比較版（物語・KPI・白書・可視化）。</li>
-        <li><b>v2/v3 真のマルチエージェント</b>：誰も筋書きを書かず、各住民AIの判断から村の変化が生まれる。</li>
-        <li><b>同一実験の再生は追加費用なし（$0）で監査・再走</b>：決定論エンジン＋結果を保存して再生するキャッシュ＋不変条件テスト<b>363本以上</b>（プロジェクトのログ上）。</li>
-        <li><b>v3 現実分布で実機実行</b>：現実の人口構成に寄せ、3つの乱数条件×3つの告知手段（広報誌/口コミ/偶発）を比較。
-          「広報誌だけでは関係人口の入口が動きにくい」等を抽出。</li>
+        <li>v1で、住民30人・10年・3つの政策パスを比べる版をつくり、物語やKPI、白書、可視化まで動かしました。</li>
+        <li>v2とv3では、誰も筋書きを書かず、住民AIそれぞれの判断から村の変化が生まれるようにしました。</li>
+        <li>同じ実験なら、追加のAPI費用なしで何度でも同じ結果を再現でき、後から検証できます。決定論のエンジンと、結果を保存して再生するしくみ、それに363本以上のテストで支えています。</li>
+        <li>v3では人口構成を現実に近づけ、乱数の条件を3通り、告知手段を広報誌・口コミ・偶発の3通りで比べました。広報誌だけでは関係人口の入口が動きにくい、といったことが見えてきました。</li>
       </ul>
     </section>
 
     <section class="block pos">
       <h2>世界の中での位置</h2>
       <table>
-        <tr><th>取り組み</th><th>焦点</th></tr>
-        <tr><td>DeepMind / 清華大 等</td><td>大規模・都市・社会的相互作用</td></tr>
-        <tr><td>Aaru 等</td><td>選挙・市場の「予測」</td></tr>
-        <tr class="us"><td>月浦</td><td>限界集落 × 再現可能 × 対話の道具</td></tr>
+        <tr><th>取り組み</th><th>力を入れているところ</th></tr>
+        <tr><td>DeepMind、清華大 など</td><td>大規模・都市・社会のやりとり</td></tr>
+        <tr><td>Aaru など</td><td>選挙や市場の予測</td></tr>
+        <tr class="us"><td>月浦</td><td>限界集落／くり返し再現できる／話し合いの道具</td></tr>
       </table>
-      <p style="margin:7px 0 0;font-size:8.3pt;color:var(--sub);">
-        海外大手は都市・予測に集中。<b style="color:var(--teal-d);">限界集落の政策反応を「予測せず見つける」領域は調査範囲で空白</b>。
-        国の地方創生2.0が追い風。
+      <p style="margin:8px 0 0;font-size:8.6pt;color:var(--sub);">
+        海外の大手は、都市や予測に力を入れています。限界集落で、予測せずに住民の反応を見つける取り組みは、調べたかぎり見当たりません。国の地方創生2.0も追い風です。
       </p>
     </section>
   </div>
 
   <section class="block">
-    <h2>次の一手 ― クレジットで進めるロードマップ</h2>
-    <div class="sublabel">A. 足場固め ― クレジットが直接効く近い一手</div>
+    <h2>次の一手｜クレジットで進めること</h2>
+    <div class="sublabel">A. まず足場を固める（クレジットが直接効く近い一手）</div>
     <div class="cards">
       <div class="card">
         <span class="n">1</span>
-        <h3>実データへの接地</h3>
-        <p>実在集落を1つ選び、国勢調査＋聞き取りで住民像を作り直す。「既知の10年」を較正外データで再現できるか検証（retrodiction）。</p>
+        <h3>実データに合わせる</h3>
+        <p>実在する集落を1つ選び、国勢調査と聞き取りから住民像を作り直す。すでに分かっている10年ぶんの実際の変化を、作り込みに使っていないデータで再現できるか確かめる。</p>
       </div>
       <div class="card">
         <span class="n">2</span>
-        <h3>多seed・モデル横断</h3>
-        <p>住民数・試行回数・政策パターンを増やし統計的安定性を確認。複数モデルで回しモデル依存の癖を測る。</p>
+        <h3>条件を変えて何度も試す</h3>
+        <p>住民数や試行回数、政策のパターンを増やし、結果が乱数の条件に左右されすぎないか確かめる。複数のモデルでも動かし、特定モデルの癖への依存を見る。</p>
       </div>
       <div class="card">
         <span class="n">3</span>
-        <h3>関係と感情の記憶</h3>
-        <p>移住者の受け入れ・定着を左右する人間関係と感情の記憶を作り込む。高齢住民と若い移住希望者で記憶の働き方を変える。</p>
+        <h3>人間関係と感情の記憶</h3>
+        <p>移住者の受け入れや定着を左右するのは人間関係。住民どうしの関係と感情の記憶を作り込み、高齢の住民と若い移住希望者で記憶の働き方を変える。</p>
       </div>
       <div class="card">
         <span class="n">4</span>
-        <h3>自治体向け自動化</h3>
-        <p>担当者がそのまま会議で使えるレポート／可視化を自動生成。「研究者の道具」を「現場で回せる道具」へ。</p>
+        <h3>自治体向けに自動化</h3>
+        <p>担当者がそのまま会議で使えるレポートと可視化を自動でつくる。研究の道具を、現場で回せる道具にする。</p>
       </div>
     </div>
-    <div class="sublabel">B. その先の広がり ― 足場を固めた先に見ている絵</div>
+    <div class="sublabel">B. その先に見ている広がり</div>
     <div class="next3">
-      <div class="nx"><b>1集落 → 多くの地域が同時に</b>判断が安くなるほど「1つの村を1回」が「多くの自治体が各自の地域を何通りも」へ質的に広がる。月浦はその最小単位。</div>
-      <div class="nx"><b>まず実在の1自治体と</b>研究の道具で終わらせない。生成レポートが実際の会議で使われる状態を作り、現場で使える形を見極めてから他地域へ。</div>
-      <div class="nx"><b>OpenAIフロンティアで深く</b>推論モデルを住民の判断に充て「人が見落とす反応」をどこまで深く拾えるか検証。モデル非依存ゆえ載せ替えで質を上げられる。</div>
+      <div class="nx"><b>集落1つから、多くの地域へ同時に</b>判断が安くなるほど、集落1つを1回試すことが、多くの自治体が同時に自分の地域を何通りも試すことへ広がる。月浦はその最小単位。</div>
+      <div class="nx"><b>まずは実在の自治体1つと組む</b>研究の道具で終わらせない。作ったレポートが実際の会議で使われる状態をつくり、現場で使える形を見極めてから、ほかの地域へ広げる。</div>
+      <div class="nx"><b>OpenAIの新しいモデルで深く</b>推論モデルを住民の判断にあて、人が見落とす反応をどこまで深く拾えるか確かめる。特定モデルに依存しない作りなので、載せ替えて質を上げられる。</div>
     </div>
   </section>
 
   <div class="grid2">
     <section class="block">
-      <h2>AGIとの接続</h2>
-      <p style="margin:0;font-size:9pt;">
-        AGIが安く人間らしい判断を量産できると、政策・制度・地域の意思決定を
-        <b>本番の前に何千通りも試してから選べる</b>ようになる。
-        いま試せるのは1集落だが、判断が安くなるほど<b>多くの地域が同時に自分の村を試せる</b>方向へ広がる。
-        まず日本でいちばん難しい現場（消えゆく集落）から始め、
-        <b>同じ結果を再現でき、できないことははっきり示せる</b>「政策の試作環境」を、
-        誰もが自分の地域で動かせる形にしたい。月浦はその最初の一歩。
+      <h2>AGIが進むと何が変わるか</h2>
+      <p style="margin:0;font-size:8.6pt;">
+        AGIが、人間に近い判断を安くこなせるようになると、政策や制度、地域の意思決定を、本番の前に何千通りも試してから選べるようになります。
+        いま試せるのは集落1つぶんですが、判断のコストが下がるほど、多くの地域が同時に自分の村を試せるようになります。
+        まずは日本でいちばん難しい現場、消えていく集落から始めます。同じ結果を再現でき、できないことははっきり示せる試作環境を、誰もが自分の地域で動かせる形にしていきます。月浦はその最初の一歩です。
       </p>
     </section>
 
     <section class="block">
-      <h2>技術の要点</h2>
-      <div>
-        <span class="tag">決定論シミュエンジン</span>
-        <span class="tag">リプレイキャッシュ（同一再生は$0）</span>
-        <span class="tag">invariantテスト 363+</span>
-        <span class="tag">Claude Sonnet 4.6（中心）</span>
-        <span class="tag">Haiku（軽い判断）</span>
-        <span class="tag">OpenAI埋め込み（意味検索）</span>
-        <span class="tag">Fine-tuningなし／モデル載せ替え可</span>
-      </div>
-      <p class="amber" style="margin-top:8px;">
-        <b>現段階：</b>いまは動くプロトタイプで、検証は数回の試行にとどまり住民も架空から作っている。
-        だからこそ「実データ接地」と「多seed検証」が次の本丸。
+      <h2>技術のなかみ</h2>
+      <p style="margin:0 0 7px;font-size:8.4pt;">
+        決定論のエンジンに、結果を保存して再生するしくみと、363本以上のテストを組み合わせています。
+        基盤のモデルは、ふだんの判断にClaude Sonnet 4.6、軽い判断にHaiku、意味の検索にOpenAIの埋め込みを使い、ファインチューニングはしていません。別のモデルにも載せ替えられます。
+      </p>
+      <p class="amber">
+        いまは動くプロトタイプの段階です。検証はまだ数回の試行にとどまり、住民も架空から作っています。だからこそ、実データに合わせることと、条件を変えた検証が、次の中心になります。
       </p>
     </section>
   </div>
 
-  <footer>
-    <div>
-      <b>チーム</b>：草場 壽一 ― 京大物理学科・院（前野研）→ 日立中央研究所10年 → 現 東大理科II類。
-      査読論文 JPSJ 2008（第2著者）。シンギュラリティラボ代表。
-    </div>
-    <div style="white-space:nowrap;">運営：一般社団法人 未来技術推進協会</div>
-  </footer>
 
 </div>
 </body>
